@@ -44,6 +44,16 @@ ECommercePlatform/
 
 ## Step 2: Configure Database (MySQL)
 
+### 2.0: Prepare MySQL Database and User
+
+Before updating the connection string, ensure you have created the database and a dedicated MySQL user with appropriate privileges:
+```sql
+CREATE DATABASE ProductCatalogDb;
+CREATE USER 'catalog_user'@'localhost' IDENTIFIED BY 'YourPassword';
+GRANT ALL PRIVILEGES ON ProductCatalogDb.* TO 'catalog_user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
 ### 2.1 Install MySQL EF Core Provider
 
 In each service folder, run:
@@ -80,6 +90,24 @@ In `appsettings.json` of each service, add (replace credentials as needed):
        options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
            new MySqlServerVersion(new Version(8, 0, 30))));
    ```
+
+### 2.4 Generate and Apply Migrations
+
+In the `ProductCatalogService` folder, ensure `dotnet-ef` is on your PATH and run:
+
+```bash
+export PATH="$PATH:/Users/<your-user>/.dotnet/tools"
+cd ProductCatalogService
+dotnet ef migrations add InitialCreate --context ProductContext
+dotnet ef database update --context ProductContext
+```
+
+### 2.5 Run the Service
+
+Still in the `ProductCatalogService` folder, start the Web API:
+```bash
+dotnet run
+```
 
 ## Step 3: Scaffold Controllers and CRUD Endpoints
 

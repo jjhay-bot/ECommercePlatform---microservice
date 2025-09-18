@@ -1,0 +1,51 @@
+# .gitignore for .NET Core microservices platform
+
+# Build Folders
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# npm
+node_modules/
+
+# User secrets (contains connection strings, passwords)
+**/appsettings.Development.json
+**/secrets.json
+
+# EF Migrations
+**/Migrations/
+
+# Tools
+**/.dotnet/tools
+
+# Misc
+*.db
+*.db-journal
+
+# Other
+.env
+
+# Ignore https development cert
+**/*.pfx
+
+# Ignore launch settings
+**/launchSettings.json

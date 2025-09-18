@@ -1,2 +1,0 @@
-# ECommercePlatform---microservice
-ECommercePlatform - microservice

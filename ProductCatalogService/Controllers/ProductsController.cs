@@ -6,14 +6,14 @@ using ProductCatalogService.Models;
 namespace ProductCatalogService.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/products")]
     public class ProductsController : ControllerBase
     {
-        private readonly ProductContext _context;
+        private readonly ProductContext _context; // ← Available to ALL methods
 
         public ProductsController(ProductContext context)
         {
-            _context = context;
+            _context = context; // ← Assigns the value
         }
 
         [HttpGet]

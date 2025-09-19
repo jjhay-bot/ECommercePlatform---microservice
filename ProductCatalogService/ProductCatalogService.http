@@ -1,6 +1,48 @@
 @ProductCatalogService_HostAddress = http://localhost:5241
 
-GET {{ProductCatalogService_HostAddress}}/weatherforecast/
+###
+@productCatalogId = 4
+
+# Product Catalog CRUD Endpoints (REST-compliant)
+
+# Get all products
+GET {{ProductCatalogService_HostAddress}}/api/v1/products
 Accept: application/json
 
+
 ###
+# Get a single product by ID
+GET {{ProductCatalogService_HostAddress}}/api/v1/products/{{productCatalogId}}
+Accept: application/json
+
+
+###
+# Create a new product
+POST {{ProductCatalogService_HostAddress}}/api/v1/products
+Content-Type: application/json
+
+{
+  "name": "Sample Product",
+  "description": "Sample description",
+  "price": 9.99,
+  "stock": 100
+}
+
+
+###
+# Update an existing product
+PUT {{ProductCatalogService_HostAddress}}/api/v1/products/{{productCatalogId}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Updated Product",
+  "description": "Updated description",
+  "price": 19.99,
+  "stock": 50
+}
+
+
+###
+# Delete a product by ID
+DELETE {{ProductCatalogService_HostAddress}}/api/v1/products/{{productCatalogId}}

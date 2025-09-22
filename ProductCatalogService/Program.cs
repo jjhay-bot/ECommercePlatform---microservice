@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProductCatalogService.Data;
 using Microsoft.Extensions.DependencyInjection;
+using ProductCatalogService.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,9 @@ builder.Services.AddDbContext<ProductContext>(options =>
         new MySqlServerVersion(new Version(8, 0, 30))
     )
 );
+
+// Register AutoMapper with the ProductMappingProfile
+builder.Services.AddAutoMapper(typeof(ProductMappingProfile));
 
 var app = builder.Build();
 

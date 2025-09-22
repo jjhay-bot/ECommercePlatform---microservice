@@ -84,6 +84,41 @@ namespace ProductCatalogService.Models
 
 ---
 
+## Using AutoMapper for DTO Mapping
+
+> **Tip:** To avoid repetitive manual mapping between models and DTOs, use [AutoMapper](https://automapper.org/). It automatically maps properties between objects based on conventions and mapping profiles.
+>
+> **Setup Example:**
+> 1. Install the `AutoMapper.Extensions.Microsoft.DependencyInjection` NuGet package.
+> 2. Create a mapping profile (e.g., `ProductMappingProfile`):
+>
+>    ```csharp
+>    using AutoMapper;
+>    using ProductCatalogService.Models;
+>    using ProductCatalogService.DTOs;
+>    
+>    namespace ProductCatalogService.Mappings
+>    {
+>        public class ProductMappingProfile : Profile
+>        {
+>            public ProductMappingProfile()
+>            {
+>                CreateMap<Product, ProductDto>();
+>                CreateMap<CreateProductDto, Product>();
+>                CreateMap<UpdateProductDto, Product>();
+>            }
+>        }
+>    }
+>    ```
+> 3. Register AutoMapper in your service (e.g., in `Program.cs`):
+>
+>    ```csharp
+>    builder.Services.AddAutoMapper(typeof(ProductMappingProfile));
+>    ```
+> 4. Inject and use `IMapper` in your controllers to map between models and DTOs.
+
+---
+
 ## Next Steps
 - Reference your models in your DbContext (e.g., `DbSet<Product> Products`)
 - Use models in your controllers for CRUD operations

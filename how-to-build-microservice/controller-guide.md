@@ -16,13 +16,14 @@ Controllers handle HTTP requests and responses in your microservice. This guide 
 
 ---
 
-## 🚀 Quick Example: ProductsController
+## 🚀 Quick Example: ProductsController (Best Practice with DTOs and ProductMappers)
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ProductCatalogService.Data;
+using ProductCatalogService.DTOs;
 using ProductCatalogService.Models;
+using ProductCatalogService.Mappings;
 
 [ApiController]
 [Route("api/v1/[controller]")]
@@ -37,42 +38,46 @@ public class ProductsController : ControllerBase
 
     // GET: api/v1/products
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
     {
-        return await _context.Products.ToListAsync();
+        var products = await _context.Products.ToListAsync();
+        return Ok(products.Select(ProductMappers.ToProductDto));
     }
 
-    // GET: api/v1/products/5
+    // GET: api/v1/products/{id}
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> GetProduct(int id)
+    public async Task<ActionResult<ProductDto>> GetProduct([FromRoute] int id)
     {
         var product = await _context.Products.FindAsync(id);
         if (product == null) return NotFound();
-        return product;
+        return Ok(ProductMappers.ToProductDto(product));
     }
 
     // POST: api/v1/products
     [HttpPost]
-    public async Task<ActionResult<Product>> PostProduct(Product product)
+    public async Task<ActionResult<ProductDto>> PostProduct([FromBody] CreateProductDto createDto)
     {
+        var product = ProductMappers.ToProduct(createDto);
         _context.Products.Add(product);
         await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+        var productDto = ProductMappers.ToProductDto(product);
+        return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, productDto);
     }
 
-    // PUT: api/v1/products/5
+    // PUT: api/v1/products/{id}
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutProduct(int id, Product product)
+    public async Task<IActionResult> PutProduct([FromRoute] int id, [FromBody] UpdateProductDto updateDto)
     {
-        if (id != product.Id) return BadRequest();
-        _context.Entry(product).State = EntityState.Modified;
+        var product = await _context.Products.FindAsync(id);
+        if (product == null) return NotFound();
+        ProductMappers.UpdateProductFromDto(product, updateDto);
         await _context.SaveChangesAsync();
         return NoContent();
     }
 
-    // DELETE: api/v1/products/5
+    // DELETE: api/v1/products/{id}
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteProduct(int id)
+    public async Task<IActionResult> DeleteProduct([FromRoute] int id)
     {
         var product = await _context.Products.FindAsync(id);
         if (product == null) return NotFound();
@@ -155,6 +160,27 @@ public async Task<IActionResult> PutProduct(int id, Product product)
     // ... rest of method
 }
 ```
+
+---
+
+## Controller Parameter Binding: [FromBody] and [FromRoute]
+
+> **Best Practice:**
+> Use `[FromBody]` for complex types (like DTOs) that come from the request body (e.g., POST/PUT/PATCH), and `[FromRoute]` for simple types (like IDs) that come from the URL route.
+>
+> **Example:**
+>
+> ```csharp
+> [HttpPut("{id}")]
+> public async Task<IActionResult> UpdateProduct(
+>     [FromRoute] int id,
+>     [FromBody] UpdateProductDto updateDto)
+> {
+>     // Use id from route and updateDto from body
+> }
+> ```
+>
+> This makes your API contracts explicit and helps with validation and documentation.
 
 ---
 

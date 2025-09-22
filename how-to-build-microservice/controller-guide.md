@@ -4,6 +4,18 @@ Controllers handle HTTP requests and responses in your microservice. This guide 
 
 ---
 
+## DTO Usage in Controllers
+
+> **Note:**
+> Always use DTOs (Data Transfer Objects) for request and response bodies in your controllers. This ensures only intended fields are processed and returned, and keeps your API contract stable even if your database models change.
+>
+> - Accept DTOs for POST/PUT/PATCH endpoints
+> - Return DTOs for GET endpoints if you want to control the response shape
+>
+> Refer to the model design documentation for more details and examples.
+
+---
+
 ## 🚀 Quick Example: ProductsController
 
 ```csharp

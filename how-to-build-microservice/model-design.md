@@ -4,6 +4,19 @@ Designing your models (entities) is the foundation of a robust microservice. Thi
 
 ---
 
+## DTO Usage in API Design
+
+> **Best Practice:**
+> For API input and output, use Data Transfer Objects (DTOs) instead of exposing your entity models (e.g., `Product`) directly. DTOs help control which fields are accepted or returned, improve security, and decouple your API contract from your database schema.
+>
+> - Use `CreateProductDto` for POST (creation)
+> - Use `UpdateProductDto` for PUT/PATCH (updates)
+> - Use `ProductDto` for GET (responses)
+>
+> This approach prevents over-posting, hides sensitive/internal fields, and makes future changes easier.
+
+---
+
 ## 🚀 Quick Example: Product Model
 
 ```csharp

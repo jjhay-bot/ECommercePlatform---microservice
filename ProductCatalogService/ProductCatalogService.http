@@ -22,7 +22,7 @@ POST {{ProductCatalogService_HostAddress}}/api/v1/products
 Content-Type: application/json
 
 {
-  "name": "Sample Product",
+  "name": "Sample Product8",
   "description": "Sample description",
   "price": 9.99,
   "stock": 100

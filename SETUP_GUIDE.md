@@ -271,8 +271,14 @@ dotnet ef database update --context ProductContext
 
 ### 2.5 Run the Service
 
-Still in the `ProductCatalogService` folder, start the Web API:
+From the solution root folder, start the Web API with:
 ```bash
+dotnet run --project ProductCatalogService/ProductCatalogService.csproj
+```
+
+Or navigate to the service folder first:
+```bash
+cd ProductCatalogService
 dotnet run
 ```
 

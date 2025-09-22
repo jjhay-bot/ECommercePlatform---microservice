@@ -1,0 +1,12 @@
+### Get all orders
+GET http://localhost:5000/api/orders
+Accept: application/json
+
+### Create a new order
+POST http://localhost:5000/api/orders
+Content-Type: application/json
+
+{
+  "customerName": "John Doe",
+  "totalAmount": 99.99
+}
